@@ -174,9 +174,12 @@ class EmployeeController extends Controller {
         $person = PersonModel::getPerson($request->idPerson);
         $person->update($personUpd);
 
-        // Actualizo los datos de Employee
+        // Actualizo los datos de Empleado
         $EmployeeUpd = [];
+        $EmployeeUpd['id'] = $request->idEmpl;
         $EmployeeUpd['id_person'] = $person->id;
+        $EmployeeUpd['empl_finicio'] = $person->id;
+        $EmployeeUpd['empl_ffin'] = $person->id;
 
         $validate = EmployeeModel::getValidator($EmployeeUpd);
 
