@@ -54,9 +54,9 @@ Route::get('/showPerson/{id}', 'PersonController@show')->name('showPerson');
 Route::get('/listEmpl', 'EmployeeController@index')->name('listEmpl');
 Route::get('/getCities/{idState}', 'EmployeeController@Cities')->name('Cities');
 Route::get('/deleteEmployee/{id}', 'EmployeeController@destroy')->name('deleteEmployee');
-Route::post('/saveEmpl', 'EmployeeController@store')->name('saveEmployee');
+Route::post('/saveEmployee', 'EmployeeController@store')->name('saveEmployee');
 Route::post('/updateEmployee/{id}', 'EmployeeController@update')->name('updateEmployee');
-Route::get('/showEmpl/{id}', 'EmployeeController@searchClient')->name('showEmployee');
+Route::get('/showEmpl/{id}', 'EmployeeController@searchEmployee')->name('showEmployee');
 Route::get('/formEmployee/{id?}/{show?}', 'EmployeeController@create')->name('formEmployee');
 
 // Clientes
@@ -102,7 +102,6 @@ Route::get('/searchMaterial/{material_id}', 'PriceListController@searchMaterial'
 
 //Excel
 Route::get('/reportMachineMov', 'ReportController@reportMachineMov')->name('reportMachineMov');
-
 Route::get('/showConstruction/{id}', 'ConstructionController@show')->name('showConstruction');
 
 ;

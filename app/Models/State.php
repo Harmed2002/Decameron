@@ -32,13 +32,9 @@ class State extends Model
         return State::find($id);
     }
 
-    public function City()
-    {
-        return $this->belongsTo('App\Models\City', 'dpto_id','id');
-    }
     public function Cities()
     {
-        return $this->hasMany('App\Models\City','dpto_id', 'id' );
+        return $this->hasMany('App\Models\City', 'dpto_id', 'id' );
     }
 
 }

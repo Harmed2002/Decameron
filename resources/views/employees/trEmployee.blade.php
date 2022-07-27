@@ -3,15 +3,18 @@
         @if ($employee->empl_estado == 'I') style="color:#e3342f" @endif>
         <td>{{ $employee->id }}</td>
         <td>{{ $employee->Person->pers_primernombre .' '. $employee->Person->pers_segnombre.' '.$employee->Person->pers_primerapell .' '.$employee->Person->pers_segapell  ?? '' }}</td>
-        <td>{{ $employee->Person->pers_razonsocial }}</td>
-        <td>{{ $employee->Person->pers_identif }} - {{ $employee->Person->pers_tipoid }}</td>
+        <td>{{ $employee->Person->pers_tipoid }} {{ $employee->Person->pers_identif }}</td>
+        <td>{{ $employee->position->posi_nombre }}</td>
+        <td>{{ number_format($employee->empl_vlrsalario).' ('.$employee->empl_tiposalario.')' }}</td>
+        <td>{{ $employee->empl_finicio }}</td>
+        <td>{{ $employee->empl_ffin }}</td>
+        <td>
+            {{ $employee->Person->pers_direccion }}
+            {{ $employee->Person->State->dpto_nombre }} -  {{ $employee->Person->City->ciud_nombre }}<br>
+        </td>
         <td>                                       
             <b>TEL: </b>{{ $employee->Person->pers_telefono }}<br>
             <b>EMAIL: </b>{{ $employee->Person->pers_email }}
-        </td>
-        <td>
-            {{ $employee->Person->State->dpto_nombre }} -  {{ $employee->Person->City->ciud_nombre }}<br>
-            {{ $employee->Person->pers_direccion }}
         </td>
 
         <td class="text-right py-0 align-middle">

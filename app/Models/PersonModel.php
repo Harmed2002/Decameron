@@ -47,25 +47,23 @@ class PersonModel {
      */
     public static function getValidator($data, $tipoId) {
         $validator  = null;
-        // Se organiza la condicion los validator dependiendo lo que se necesite que valide
-
         $niceNames = array(
             'pers_identif.required'     => 'El número de identificación es requerido',
-            'pers_tipoid.required'       => 'El tipo de identificación es requerido',
-            'pers_razonsocial.required'  => 'El razón social es requerida',
-            'pers_razonsocial.max'  => 'El razón social debe tener maximo 120 caracteres',
-            'dpto_id.required'         => 'El dpto. es requerida',
-            'ciud_id.required'       => 'El ciudad es requerida',
-            'id_user.required'           => 'El id user es requerido',
-            'pers_email.required' => 'El email es requerido',
-            'pers_email.unique' => 'El email debe ser único, el ingresado ya está asociado a un cliente',
-            'pers_email.email' => 'El email ingresado, no corresponde al formato requerido',
-            'pers_identif.pers_identif'     => 'El número de identificación debe ser único, el ingresado ya está asociado a un cliente',
-            'pers_identif.pers_telefono'     => 'El número télefonico debe tener maximo 50 caracteres',
+            'pers_tipoid.required'      => 'El tipo de identificación es requerido',
+            'pers_razonsocial.required' => 'El razón social es requerida',
+            'pers_razonsocial.max'      => 'El razón social debe tener maximo 120 caracteres',
+            'dpto_id.required'          => 'El dpto. es requerida',
+            'ciud_id.required'          => 'El ciudad es requerida',
+            'id_user.required'          => 'El id user es requerido',
+            'pers_email.required'       => 'El email es requerido',
+            'pers_email.unique'         => 'El email debe ser único, el ingresado ya está asociado a un cliente',
+            'pers_email.email'          => 'El email ingresado, no corresponde al formato requerido',
+            'pers_identif.pers_identif' => 'El número de identificación debe ser único, el ingresado ya está asociado a un cliente',
+            'pers_identif.pers_telefono'=> 'El número télefonico debe tener maximo 50 caracteres',
             'pers_primernombre.required'=> 'El primer nombre es requerido',
-            'pers_primerapell.required'=> 'El primer apellido es requerido',
-            'pers_primernombre.max'=> 'El primer nombre debe tener maximo 40',
-            'pers_primerapell.max'=> 'El primer apellido debe tener maximo 40',
+            'pers_primerapell.required' => 'El primer apellido es requerido',
+            'pers_primernombre.max'     => 'El primer nombre debe tener maximo 40',
+            'pers_primerapell.max'      => 'El primer apellido debe tener maximo 40',
         );
 
       
@@ -77,8 +75,8 @@ class PersonModel {
                 'pers_razonsocial'  => 'required|max:120', //Bien
                 'pers_direccion'    => 'max:50',
                 'pers_telefono'     => 'max:50',
-                'ciud_id'       => 'required',
-                'dpto_id'         => 'required',
+                'ciud_id'           => 'required',
+                'dpto_id'           => 'required',
                 'pers_email'        => 'max:50|email|unique:persons'. $valid,
             ],$niceNames);
         } else {
@@ -89,10 +87,10 @@ class PersonModel {
                 'pers_razonsocial'  => 'max:120',
                 'pers_direccion'    => 'max:50',
                 'pers_telefono'     => 'max:50',
-                'ciud_id'       => 'required',
-                'dpto_id'         => 'required',
+                'ciud_id'           => 'required',
+                'dpto_id'           => 'required',
                 'pers_primernombre' => 'required|max:40',
-                'pers_primerapell' => 'required|max:40',
+                'pers_primerapell'  => 'required|max:40',
                 'pers_email'        => 'max:50|email|unique:persons'.$valid,
             ],$niceNames);
     

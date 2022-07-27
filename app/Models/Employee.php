@@ -16,7 +16,7 @@ class Employee extends Model
      * @var array
      */
     protected $table = 'employees';
-    protected $fillable = ['id_person','empl_finicio', 'empl_ffin', 'empl_estado'];
+    protected $fillable = ['id_person','empl_finicio', 'empl_ffin', 'empl_cargo', 'empl_tiposalario', 'empl_vlrsalario', 'empl_rutafoto', 'empl_estado'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
 
@@ -24,20 +24,24 @@ class Employee extends Model
     {
         //return Employee::find($id);
         $empl = Client::join("persons", "persons.id", "=", "id_person")
-                    ->select("employees.*", "persons.id as idPerson", "pers_identif", "pers_tipoid", "pers_razonsocial", "pers_primernombre", "pers_segnombre",
-                            "pers_primerapell", "pers_segapell", "pers_direccion", "pers_telefono", "pers_ciudad", "pers_dpto", "pers_email", "id_user")
-                    ->where("employees.id", "=", $id)
-                    ->get();
+                        ->join("positions", "positions.id", "=", "empl_cargos")
+                        ->select("employees.*", "persons.id as idPerson", "pers_identif", "pers_tipoid", "pers_razonsocial", "pers_primernombre", "pers_segnombre",
+                            "pers_primerapell", "pers_segapell", "pers_direccion", "pers_telefono", "pers_ciudad", "pers_dpto", "pers_email", "id_user", "posi_nombre")
+                        ->where("employees.id", "=", $id)
+                        ->get();
 
-            
-        //dd($empl);
         return $empl;
-
     }
 
+    
     public function Person()
     {
         return $this->belongsTo('App\Models\Person', 'id_person', 'id');
+    }
+
+    public function Position()
+    {
+        return $this->belongsTo('App\Models\Position', 'empl_cargo', 'id');
     }
 
 }

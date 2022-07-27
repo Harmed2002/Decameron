@@ -13,7 +13,8 @@ $(document).ready(function () {
     }).buttons().container().appendTo('#employeeTable_wrapper .col-md-6:eq(0)');
 });
 
-function createEmployee(id = null, show = null, type = null){
+function createEmployee(id = null, show = null){
+    //, type = null
     if (show == true) {
         openModal("Datos de Empleado")
     }
@@ -27,7 +28,7 @@ function createEmployee(id = null, show = null, type = null){
     }
 
     url = id == null ? 'formEmployee' : 'formEmployee/' + id + '/' + show;
- 
+
     $.ajax({
         type: 'get',
         url: url,
@@ -36,8 +37,9 @@ function createEmployee(id = null, show = null, type = null){
 
             $('#adminModalBody').html('');
             $('#adminModalBody').html(data);
-            typeDocument(type);
-                initSelectTwoModal()
+            
+            //typeDocument(type);
+            initSelectTwoModal()
         },
         error: (data) => { 
             alertDanger()
@@ -58,25 +60,29 @@ function saveEmployee(){
     let idPers = document.getElementById('idPerson').value;
     let idEmpl = document.getElementById('idEmployee').value;
     
-    var data = $('.form-send-employee').serialize();
-    url = idEmpl == 0 ? 'saveEmployee' : 'updateEmployee/' + idEmpl;
+    //var data = $('.form-send-employee').serialize();
+    //var data = new FormData($('.form-send-employee')[0]);
+    //console.log(data);
+    url = idPers == 0 ? 'saveEmployee' : 'updateEmployee/' + idEmpl;
 
     $.ajax({
-        type: 'post',
+        type: 'POST',
         url: url, 
-        data:data,
-        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+        data: new FormData($('.form-send-employee')[0]),
+        //dataType: 'json',
+        contentType: false,
+        processData: false,
+        //headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: (data) => {
             hideModal();
-            // Lllega aca y la pego
             $('#tbody_employee').html('');
             $('#tbody_employee').html(data);
     
             alertSuccess()
         },
         error: (data) => {
+            //console.log('Error:', data);
             alertDanger();
-            $(".rSocial").prop("disabled", true);
             if (typeof data.responseJSON.errors == "object") {
                 onFail(data.responseJSON.errors);
             } else {
@@ -98,25 +104,23 @@ function deleteEmployee(id){
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '¿Desea anularlo?'
+        confirmButtonText: '¡Anular!'
       }).then((result) => {
-          console.log(result);
+            //console.log(result);
         if (result) {
 
             $.ajax({
                 type: 'get',
-                url: 'deleteEmployee/'+id,
+                url: 'deleteEmployee/' + id,
                 success: (data) => {
          
                     $('#tbody_employee').html('');
                     $('#tbody_employee').html(data);
                     swal({
-
                         title: '¡Anulado!',
                         text: 'Se ha cambiado el estado con éxito',
                         icon: "success",
                       })
-                
                 },
                 error: (data) => {
                    
@@ -132,4 +136,40 @@ function deleteEmployee(id){
 
         }
       })
+}
+
+function letFormat(type) { 
+    let vlrSalario = document.getElementById('salario').value;
+    
+    // Gana el foco
+    if(type == '1') {
+        document.getElementById('salario').value = vlrSalario.replace(/,/gi, '');
+        //alert(number_format(vlrSalario, 0, '', ''));
+    }
+    
+    // Pierde el foco
+    if(type == '2') {
+        document.getElementById('salario').value = new Intl.NumberFormat('es-MX').format(vlrSalario);
+        //new Intl.NumberFormat('es-MX').format(vlrSalario)
+    }
+}
+
+function imagePreview() {
+    const $getPhoto = document.querySelector("#photo"), $imgPreview = document.querySelector("#photoEmpl");
+
+    // Escuchar cuando cambie
+    //$getPhoto.addEventListener("change", () => {
+        const archivos = $getPhoto.files;
+        // Si no hay archivos salimos de la función y quitamos la imagen
+        if (!archivos || !archivos.length) {
+            $imgPreview.src = "img/Employees/User.png";
+            return;
+        }
+        // Ahora tomamos el primer archivo, el cual vamos a previsualizar
+        const firstImage = archivos[0];
+        // Lo convertimos a un objeto de tipo objectURL
+        const objectURL = URL.createObjectURL(firstImage);
+        // Y a la fuente de la imagen le ponemos el objectURL
+        $imgPreview.src = objectURL;
+    //});
 }

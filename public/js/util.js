@@ -62,13 +62,6 @@ function initSelectTwoModal() {
     $('#typeProduction').select2({ placeholder: "Digita un tipo de movimiento, selecciona" });
     $('#permissions').select2({ placeholder: "Digita los nombres de los permisos a asociar, selecciona" });
     $('#roles').select2({ placeholder: "Digita los nombres de los roles a asociar, selecciona" });
-    $('#mqmv_idmaquina').select2({ placeholder: "Digita una placa de una maquina y selecciona" });
-    $('#idObra').select2({ placeholder: "Selecciona una obra" });
-    // $('#dpto').select2({ placeholder: "Digita el departamento a asociar, selecciona" });
-    // $('#ciudad').select2({ placeholder: "Digita la ciudad a asociar, selecciona" });
-   
-    
-
 }
 
 function initSelect() {
@@ -77,19 +70,8 @@ function initSelect() {
             width: '100%',
         }
     );
-    $('#search').select2({ placeholder: "Vehiculo tanqueado" });
-    $('#searchOrigin').select2({ placeholder: "Vehiculo origen del tanqueado" });
-    $('#tanq_origen_inventory').select2({ placeholder: "Tipo de origen del tanqueado" });
-    $('#typeProduction').select2({ placeholder: "Digita el tipo de operación, selecciona" });
-    $('#idConstruction').select2({ placeholder: "Selecciona una obra" });
-    $('#idClient').select2({ placeholder: "Selecciona un cliente" });
-    $('#idMachine').select2({ placeholder: "Selecciona una maquina" });
-
-    $('#idSoc').select2({ placeholder: "Selecciona una sociedad" });
-    $('#idObra').select2({ placeholder: "Selecciona una obra" });
-    $('.idObra').select2({ placeholder: "Selecciona una obra" });
-    $('.obra_idcliente').select2({ placeholder: "Selecciona un cliente" });
 }
+
 function alertSuccess() {
     swal({
         title: "Buen trabajo!",
@@ -126,7 +108,6 @@ function onFailArray(errors) {
     $('.messages').html('<div class="alert alert-danger alert-dismissible fade show pl-5 pr-5 mt-2"><h5><i class="icon fas fa-ban"></i> Alerta!</h5><ul">' + message + '</ul><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></div>');
 
 }
-
 
 
 function onSuccess(message) {
@@ -210,6 +191,7 @@ function inactivateFields() {
         $(".Nom2").prop("disabled", true);
     }
 }
+
 function typeDocument(type) {
     if (type != null) {
         if (type === "NIT") {
@@ -226,8 +208,6 @@ function typeDocument(type) {
             $(".Apell2").prop("disabled", false);
             $(".Nom1").prop("disabled", false);
             $(".Nom2").prop("disabled", false);
-
-
         }
     }
 
@@ -248,51 +228,12 @@ function companyNameCc() {
     $('.rSocial').val(razonSocial);
 }
 var num=  random(1,9000000000);
+
 function random(min,max){
     return Math.floor(Math.random()*(max-min+1)+min)
 
 }
+
 function razonsocial(){
     $('#pers_razonsocial').val($('.rSocial').val())
-}
-
-function searchContructionClient() {
-    let idCliente = $('.obra_idcliente').val(); // Obtengo la id del cliente
-    var option = "<option selected value='0'>Seleccion una obra</option>";
-    if (idCliente != 0) {
-        $.ajax({
-            url: 'searchContructionClient/'+idCliente,
-            type: 'GET',
-            // dataType: 'json',
-            success: function (response) {
-                
-                if(response.length>0){
-                    $(".idObra").removeAttr('disabled');
-                    $.each(response, function (k, v) {
-                        option +=
-                            "<option value=" +
-                            parseInt(v.id) +
-                            ">" +
-                            v.obra_nombre +
-                            "</option>";
-                    });
-
-
-                    $(".idObra").html("");
-                    $(".idObra").append(option);
-                  
-                }else{
-                    onDangerUniqueMessage('El cliente seleccionado no cuenta con obras')
-                    $(".idObra").html("");
-                    $(".idObra").attr('disabled',true);
-               
-                }
-
-               
-            },
-            error: (error) => {
-                console.log("error", error);
-            }
-        });
-    }
 }

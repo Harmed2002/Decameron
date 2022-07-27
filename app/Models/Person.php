@@ -16,9 +16,8 @@ class Person extends Model
      * @var array
      */
     protected $table = 'persons';
-    protected $attributes = ['pers_estado' => 'A',];
     protected $fillable = ['pers_identif', 'id_user', 'pers_tipoid', 'pers_primernombre', 'pers_segnombre', 'pers_primerapell', 'pers_segapell', 
-                            'pers_direccion', 'pers_telefono', 'ciud_id', 'dpto_id', 'pers_email', 'pers_estado', 'pers_razonsocial'];
+                            'pers_direccion', 'pers_telefono', 'ciud_id', 'dpto_id', 'pers_email', 'pers_razonsocial'];
     protected $hidden = ["id",'created_at', "updated_at", "deleted_at"];
 
     public function getPersonById($id)

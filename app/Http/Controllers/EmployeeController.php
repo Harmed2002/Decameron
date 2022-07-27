@@ -8,8 +8,11 @@ use App\Models\City;
 use App\Models\Person;
 use App\Models\PersonModel;
 use App\Models\EmployeeModel;
+use App\Models\Position;
 /*use Auth;*/
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller {
@@ -20,9 +23,11 @@ class EmployeeController extends Controller {
 
      protected $cities;
 
-     public function __construct(City $cities) {
+     public function __construct(City $cities, Position $positions) {
 
         $this->cities = $cities;
+        $this->positions = $positions;
+
      }
 
     /**
@@ -32,9 +37,11 @@ class EmployeeController extends Controller {
      */
     public function index() {
         $employees = Employee::orderBy('id', 'ASC')->get();
+        //dd($employees);
         $states = State::all();
+        $positions = Position::all();
 
-        return view('employees.index', ['employees' => $employees, 'states' => $states]);
+        return view('employees.index', ['employees' => $employees, 'states' => $states, 'positions' => $positions]);
     }
 
     public function Cities($state_id) {
@@ -51,7 +58,6 @@ class EmployeeController extends Controller {
      */
     public function create(Request $request) {
         $employee = Employee::find($request->id);
-        //dd($employee);
         $person = null;
 
         if (isset($request->show) && $request->show == 'true') {
@@ -60,11 +66,13 @@ class EmployeeController extends Controller {
         } else {
             $states = State::all();
             $cities = City::all();
+            $positions = Position::all();
+
             if ($employee) {
                 $person =  $employee->Person;
             }
 
-            return view('employees.form', compact('employee', 'states', 'person', 'cities'));
+            return view('employees.form', compact('employee', 'states', 'person', 'cities', 'positions'));
         }
     }
 
@@ -75,6 +83,7 @@ class EmployeeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        //dd($request->all());
         // Creo los datos de Persona
         $person = [];
         $person['id']                   = '';
@@ -91,7 +100,7 @@ class EmployeeController extends Controller {
         $person['dpto_id']              = (int) $request->dpto;
         $person['pers_email']           = strtoupper($request->eMail);
         $person['id_user']              = Auth::id();
-        $person['pers_estado']          = 'A';
+
         $validate = PersonModel::getValidator($person, $request->TipoId);
 
         if ($validate->fails()) {
@@ -103,27 +112,39 @@ class EmployeeController extends Controller {
 
         // Creo los datos de Employees
         $employee = [];
-        $employee['client_estado'] = 'A';
-        $employee['id_person']     = $person->id;
-        // $employee['clie_dircorresp']  = $request->dirCorresp;
+        $employee['id_person']          = $person->id;
+        $employee['empl_finicio']       = $request->fInicio;
+        $employee['empl_ffin']          = $request->fFin;
+        $employee['empl_cargo']         = $request->cargo;
+        $employee['empl_tiposalario']   = $request->tiposal;
+        $salary                         = str_replace(',', '', $request->salario);
+        $employee['empl_vlrsalario']    = (int) $salary;
+
+        // Valido si la imagen se cargó
+        if($request->hasFile("photo")){
+            $photo = $request->file("photo")->store('/employees/');
+            $url = Storage::url($photo);
+
+            // Asigno la url al arreglo
+            $employee['empl_rutafoto'] = $url;
+        }
+
+        //$employee['empl_estado']  = 'A';
 
         $validate = EmployeeModel::getValidator($employee);
 
         if ($validate->fails()) {
-
             return response()->json(['errors' => $validate->errors()], 500);
         }
 
         Employee::create($employee);
 
-        // Obtengo los datos nuevamente para mostrarlos en el listado de clientes
-        $employees = Employee::orderBy('id','DESC')->paginate(7);
+        // Obtengo los datos nuevamente para mostrarlos en el listado de empleados
+        $employees = Employee::orderBy('id', 'ASC')->get(); #->paginate(7);
         $states = State::all();
-        //dd($clients);
         return view('employees.trEmployee', ['employees' => $employees, 'states' => $states]);
 
     }
-
 
     /**
      * Display the specified resource.
@@ -146,15 +167,12 @@ class EmployeeController extends Controller {
      * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee) {
-
+    public function update(Request $request) {
+        //dd($request->all());
         // Actualizo los datos de Persona
-        dd($request->all());
-        $personUpd = [];
         $personUpd['id']                    = $request->idPerson;
         $personUpd['pers_identif']          = $request->idEmployee;
         $personUpd['pers_tipoid']           = $request->TipoId;
-        $personUpd['pers_razonsocial']      = strtoupper($request->pers_razonsocial);
         $personUpd['pers_primernombre']     = strtoupper($request->Nom1);
         $personUpd['pers_segnombre']        = strtoupper($request->Nom2);
         $personUpd['pers_primerapell']      = strtoupper($request->Apell1);
@@ -174,26 +192,40 @@ class EmployeeController extends Controller {
         $person = PersonModel::getPerson($request->idPerson);
         $person->update($personUpd);
 
-        // Actualizo los datos de Empleado
-        $EmployeeUpd = [];
-        $EmployeeUpd['id'] = $request->idEmpl;
-        $EmployeeUpd['id_person'] = $person->id;
-        $EmployeeUpd['empl_finicio'] = $person->id;
-        $EmployeeUpd['empl_ffin'] = $person->id;
+        // Actualizo los datos del Empleado
+        $employeeUpd = [];
+        $employeeUpd['id']                  = $request->idEmpl;
+        $employeeUpd['id_person']           = $request->idPerson;
+        $employeeUpd['empl_finicio']        = $request->fInicio;
+        $employeeUpd['empl_ffin']           = $request->fFin;
+        $employeeUpd['empl_cargo']          = $request->cargo;
+        $employeeUpd['empl_tiposalario']    = $request->tiposal;
+        $salary                             = str_replace(',', '', $request->salario);
+        $employeeUpd['empl_vlrsalario']     = (int) $salary;
 
-        $validate = EmployeeModel::getValidator($EmployeeUpd);
+        // Valido si la imagen se cargó
+        if($request->hasFile("photo")){
+            $photo = $request->file("photo")->store('/employees/');
+            $url = Storage::url($photo);
+
+            // Asigno la url al arreglo
+            $employeeUpd['empl_rutafoto'] = $url;
+        }
+
+        $validate = EmployeeModel::getValidator($employeeUpd);
 
         if ($validate->fails()) {
             return response()->json(['errors' => $validate->errors()], 500);
         }
 
-        $employee = EmployeeModel::getEmployee($request->idClient);
-        $employee->update($EmployeeUpd);
+        $employee = EmployeeModel::getEmployee($request->idEmpl);
+        $employee->update($employeeUpd);
 
         // Obtengo los datos nuevamente para mostrarlos en el listado de empleados
-        $employees = Employee::orderBy('id', 'ASC')->paginate(7);
+        $employees = Employee::orderBy('id', 'ASC')->get(); #->paginate(7);
         $states = State::all();
         return view('employees.trEmployee', ['employees' => $employees, 'states' => $states]);
+
     }
 
     /**
@@ -203,6 +235,7 @@ class EmployeeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request) {
+        //dd($request->all());
         $empl = Employee::find($request->id);
         $empl->empl_estado ='I';
         $empl->save();

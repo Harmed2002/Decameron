@@ -35,9 +35,7 @@ class EmployeeModel {
      * @return Object Employee FormEmployee
      */
     public static function getEmployee($idEmployee) {
-        // Esta funcion se puede usar si necesitan un empleado, se busca por id
         $employee = Employee::find($idEmployee);
-
         return $employee;
     }
 
@@ -48,7 +46,7 @@ class EmployeeModel {
      */
     public static function getValidator($data) {
         $validator = Validator::make($data, [
-            
+            'photo' => 'image|max:2048'
         ]);
 
         return $validator;

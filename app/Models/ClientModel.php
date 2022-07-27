@@ -51,8 +51,8 @@ class ClientModel {
      */
     public static function getValidator($data) {
         $validator = Validator::make($data, [
-            // 'clie_identif'      => ['max:12'],
-            // 'clie_dircorresp'   => ['max:50'],
+            'clie_identif'      => ['max:12'],
+            'clie_dircorresp'   => ['max:50'],
         ]);
     
         // 'reputationNotes',

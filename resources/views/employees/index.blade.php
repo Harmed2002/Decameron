@@ -12,7 +12,7 @@
 @stop
 
 @section('content')
-   <div class="card card-warning">
+   <div class="card card-info">
         <div class="card-header">
             <h1 class="card-title"><b>Listado de Empleados</b></h1>
         </div>
@@ -34,8 +34,12 @@
                                         <th>Id</th>
                                         <th>Nombres y apellidos</th>
                                         <th>Identificación</th>
+                                        <th>Cargo</th>
+                                        <th>Salario</th>
+                                        <th>Inicio Lab.</th>
+                                        <th>Final Lab.</th>
                                         <th>Dirección</th>
-                                        <th>Datos adiccionales</th>
+                                        <th>Datos adicionales</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -46,14 +50,18 @@
                                             <td>{{ $empl->id }}</td>
                                             <td>{{ $empl->Person->pers_primernombre .' '. $empl->Person->pers_segnombre.' '.$empl->Person->pers_primerapell .' '.$empl->Person->pers_segapell  ?? '' }}</td>
                                             <td>{{ $empl->Person->pers_tipoid }} {{ $empl->Person->pers_identif }}</td>
-                                            <td>{{ $empl->Person->State->dpto_nombre }} -  {{ $empl->Person->City->ciud_nombre }} <br>{{ $empl->Person->pers_direccion }}</td>
+                                            <td>{{ $empl->position->posi_nombre }}</td>
+                                            <td>{{ number_format($empl->empl_vlrsalario).' ('.$empl->empl_tiposalario.')' }}</td>
+                                            <td>{{ $empl->empl_finicio }}</td>
+                                            <td>{{ $empl->empl_ffin }}</td>
+                                            <td>{{ $empl->Person->pers_direccion }}<br>{{ $empl->Person->State->dpto_nombre }} -  {{ $empl->Person->City->ciud_nombre }}</td>
                                             <td><b>TEL: </b>{{ $empl->Person->pers_telefono }}<br><b>EMAIL: </b>{{ $empl->Person->pers_email }}</td>
                             
                                             <td class="text-right py-0 align-middle">
                                                 <div class="btn-group btn-group-sm">
                                                     <button class="btn btn-info mr-1" onclick="createEmployee({{ $empl->id }}, true)" type="button"><i class="fas fa-eye"></i></button>
                                                     <!-- Aca debo validar si tiene autorizacion para ejecutar el boton -->
-                                                    <button class="btn btn-primary mr-1" onclick="createEmployee({{ $empl->id }}, false,'{{ $empl->Person->pers_tipoid }}')" type="button"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-primary mr-1" onclick="createEmployee({{ $empl->id }}, false)" type="button"><i class="fas fa-edit"></i></button>
                                                     <!-- Aca debo validar si tiene autorizacion para ejecutar el boton -->
                                                     <button class="btn btn-danger" onclick="deleteEmployee({{ $empl->id }},'tr_{{ $empl->id }}')" type="button"><i class="fas fa-trash"></i></button>
                                                 </div>
