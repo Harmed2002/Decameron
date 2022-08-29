@@ -20,6 +20,7 @@ class RolePermission extends Model
     public function role() {
         return $this->belongsTo('Spatie\Permission\Models\Role', 'role_id', 'id');
     }
+    
     public function permission() {
         return $this->belongsTo('Spatie\Permission\Models\Permission', 'permission_id', 'id');
     }

@@ -23,6 +23,7 @@ class RolePermissionController extends Controller {
 
         return view('admin.rolePermissions.index', compact('rolePermissions', 'roles', 'permissions'));
     }
+
     public function form(Request $request) {
 
         $user = Auth::user();
@@ -44,7 +45,6 @@ class RolePermissionController extends Controller {
             return view('admin.rolePermissions.form', compact('rolePermission', 'permissions', 'roles'));
         }
     }
-
 
     public function save(Request $request) {
 
@@ -77,6 +77,7 @@ class RolePermissionController extends Controller {
 
         return view('admin.rolePermissions.trRolePermission')->with('rolePermissions', $rolePermissions);
     }
+
     function delete(Request $request) {
         $user = Auth::user();
         if (!$user->can('Eliminar asociación de rol y permisos')) {

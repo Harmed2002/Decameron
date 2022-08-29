@@ -44,6 +44,7 @@ function submit(type, url, data = null) {
         alert("Request failed: " + textStatus);
     });
 }
+
 function resetform() {
     $("form select").each(function () {
         this.selectedIndex = 0
@@ -52,6 +53,7 @@ function resetform() {
         this.value = ''
     });
 }
+
 function initSelectTwoModal() {
     $('.select2').select2(
         {
@@ -82,7 +84,7 @@ function alertSuccess() {
 
 function alertDanger(message = null) {
     swal({
-        title: "Aviso!",
+        title: "Advertencia!",
         icon: "info",
         text: message == null ? "Algo salio mal, vuelve a intentar!" : message,
 
@@ -115,6 +117,7 @@ function onSuccess(message) {
     $('.messageSuccess').html('<div class="alert alert-success alert-dismissible fade show pt-2 pb-2 pb-0"><b>' + message + '</b><button type="button" class="btn-close pb-2" data-bs-dismiss="alert" aria-label="Close"></button></div>');
 
 }
+
 function onDanger(message, modal = false) {
     if (modal) {
         $('.listMessageErrors').html('<div class="messageErrors mt-2"><div class="alert alert-danger alert-dismissible fade show pt-2 pb-2 pb-0"><b>' + message + '</b><button type="button" class="btn-close pb-2" data-bs-dismiss="alert" aria-label="Close"></button></div></div>');
@@ -123,6 +126,7 @@ function onDanger(message, modal = false) {
         $('.messageError').html('<div class="alert alert-danger alert-dismissible fade show pt-2 pb-2 pb-0 mt-2"><b>' + message + '</b><button type="button" class="btn-close pb-2" data-bs-dismiss="alert" aria-label="Close"></button></div>');
     }
 }
+
 function onDangerUniqueMessage(message) {
     $('.listMessageErrors').show();
     $('.listMessageErrors').html('<div class="alert alert-danger alert-dismissible fade show pl-5 pr-5 mt-2"><h5><i class="icon fas fa-ban"></i> Alerta!</h5><ul">' + message + '</ul><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></div>');
@@ -176,38 +180,41 @@ function getNameClient() {
 }
 
 function inactivateFields() {
-    var tipoId = $('.TipoId').val();
+    //var tipoId = $('.TipoId').val();
+
+    let tipoId = $('#TipoId').val();
+
     if (tipoId == "CC") {
-        $(".rSocial").prop("disabled", true);
-        $(".Apell1").prop("disabled", false);
-        $(".Apell2").prop("disabled", false);
-        $(".Nom1").prop("disabled", false);
-        $(".Nom2").prop("disabled", false);
+        $('#rSocial').prop("disabled", true);
+        $('#Apell1').prop("disabled", false);
+        $('#Apell2').prop("disabled", false);
+        $('#Nom1').prop("disabled", false);
+        $('#Nom2').prop("disabled", false);
     } else {
-        $(".rSocial").prop("disabled", false);
-        $(".Apell1").prop("disabled", true);
-        $(".Apell2").prop("disabled", true);
-        $(".Nom1").prop("disabled", true);
-        $(".Nom2").prop("disabled", true);
+        $('#rSocial').prop("disabled", false);
+        $('#Apell1').prop("disabled", true);
+        $('#Apell2').prop("disabled", true);
+        $('#Nom1').prop("disabled", true);
+        $('#Nom2').prop("disabled", true);
     }
 }
 
 function typeDocument(type) {
     if (type != null) {
         if (type === "NIT") {
-            $(".Apell1").prop("disabled", true);
-            $(".Apell2").prop("disabled", true);
-            $(".Nom1").prop("disabled", true);
-            $(".Nom2").prop("disabled", true);
-            $(".rSocial").prop("disabled", false);
+            $("#Apell1").prop("disabled", true);
+            $("#Apell2").prop("disabled", true);
+            $("#Nom1").prop("disabled", true);
+            $("#Nom2").prop("disabled", true);
+            $("#rSocial").prop("disabled", false);
 
         } else {
 
-            $(".rSocial").prop("disabled", true);
-            $(".Apell1").prop("disabled", false);
-            $(".Apell2").prop("disabled", false);
-            $(".Nom1").prop("disabled", false);
-            $(".Nom2").prop("disabled", false);
+            $("#rSocial").prop("disabled", true);
+            $("#Apell1").prop("disabled", false);
+            $("#Apell2").prop("disabled", false);
+            $("#Nom1").prop("disabled", false);
+            $("#Nom2").prop("disabled", false);
         }
     }
 
@@ -227,6 +234,7 @@ function companyNameCc() {
        
     $('.rSocial').val(razonSocial);
 }
+
 var num=  random(1,9000000000);
 
 function random(min,max){
@@ -234,6 +242,24 @@ function random(min,max){
 
 }
 
-function razonsocial(){
+/*function razonsocial(){
     $('#pers_razonsocial').val($('.rSocial').val())
+}*/
+
+function imagePreview() {
+    const $getPhoto = document.querySelector("#photo"), $imgPreview = document.querySelector("#photoPers");
+    const archivos = $getPhoto.files;
+    
+    // Si no hay archivos salimos de la función y quitamos la imagen
+    if (!archivos || !archivos.length) {
+        $imgPreview.src = "img/Employees/User.png";
+        return;
+    }
+    // Ahora tomamos el primer archivo, el cual vamos a previsualizar
+    const firstImage = archivos[0];
+    // Lo convertimos a un objeto de tipo objectURL
+    const objectURL = URL.createObjectURL(firstImage);
+    // Y a la fuente de la imagen le ponemos el objectURL
+    $imgPreview.src = objectURL;
 }
+

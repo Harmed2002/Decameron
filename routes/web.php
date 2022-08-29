@@ -47,61 +47,13 @@ Route::get('/deleteUserRol/{id_user}/{id_role}', 'Admin\UserRolController@delete
 Route::post('/saveUserRol/{idUserRol?}', 'Admin\UserRolController@save')->name('saveUserRol');
 Route::get('/formUserRol/{role_id?}/{model_id?}/{show?}', 'Admin\UserRolController@form')->name('formUserRol');
 
-// Personas
-Route::get('/showPerson/{id}', 'PersonController@show')->name('showPerson');
+// Hotels
+Route::get('/listHotels', 'HotelController@index')->name('listHotels');
+Route::get('/formHotel/{id?}/{show?}', 'HotelController@create')->name('formHotel');
+Route::post('/saveHotel', 'HotelController@store')->name('saveHotel');
+Route::post('/updateHotel/{id}', 'HotelController@update')->name('updateHotel');
+Route::get('/deleteHotel/{id}', 'HotelController@destroy')->name('deleteHotel');
+Route::get('/roomDetails', 'HotelController@trRoomDetails')->name('roomDetails');
+Route::get('/getCities/{idState}', 'HotelController@Cities')->name('Cities');
+Route::get('/getAccommodations/{idRoomType}', 'HotelController@Accommodations')->name('Accommodations');
 
-// Empleados
-Route::get('/listEmpl', 'EmployeeController@index')->name('listEmpl');
-Route::get('/getCities/{idState}', 'EmployeeController@Cities')->name('Cities');
-Route::get('/deleteEmployee/{id}', 'EmployeeController@destroy')->name('deleteEmployee');
-Route::post('/saveEmployee', 'EmployeeController@store')->name('saveEmployee');
-Route::post('/updateEmployee/{id}', 'EmployeeController@update')->name('updateEmployee');
-Route::get('/showEmpl/{id}', 'EmployeeController@searchEmployee')->name('showEmployee');
-Route::get('/formEmployee/{id?}/{show?}', 'EmployeeController@create')->name('formEmployee');
-
-// Clientes
-Route::get('/listClients', 'ClientController@index')->name('listClients');
-Route::get('/getCities/{idState}', 'ClientController@Cities')->name('Cities');
-// Route::get('/showClient/{id}', 'ClientController@showClient')->name('showClient');
-Route::get('/deleteClient/{id}', 'ClientController@destroy')->name('deleteClient');
-Route::post('/saveClient', 'ClientController@store')->name('saveClient');
-Route::post('/updateClient/{id}', 'ClientController@update')->name('updateClient');
-Route::get('/showClient/{id}', 'ClientController@searchClient')->name('showClient');
-Route::get('/formClient/{id?}/{show?}', 'ClientController@create')->name('formClient');
-
-
-// Proveedores
-Route::get('/listSuppliers', 'SupplierController@index')->name('listSuppliers');
-Route::get('/getCities/{idState}', 'SupplierController@Cities')->name('Cities');
-Route::get('/formSupplier/{id?}/{show?}', 'SupplierController@create')->name('formSupplier');
-Route::post('/saveSupplier', 'SupplierController@store')->name('saveSupplier');
-Route::get('/deleteSupplier/{idSupplier}', 'SupplierController@destroy')->name('deleteSupplier');
-Route::post('/searchEconomica', 'SupplierController@searchEconomica')->name('searchEconomica');
-
-//  Inventory
-Route::get('/inventory', 'InventoryController@index')->name('inventory');
-Route::get('/formInventory', 'InventoryController@form')->name('formInventory');
-Route::get('/deleteInventory', 'InventoryController@delete')->name('deleteInventory');
-Route::post('/save', 'InventoryController@save')->name('save');
-Route::get('/inventoryControl', 'InventoryController@inventoryControl')->name('inventoryControl');
-
-//Report
-Route::get('/reports', 'ReportController@index')->name('reports');
-Route::get('/reportDocument', 'ReportController@reportDocument')->name('reportDocument');
-Route::get('/reportRemissions', 'ReportController@reportRemissions')->name('reportRemissions');
-Route::get('/pdfReportRemissions', 'ReportController@pdfReportRemissions')->name('pdfReportRemissions');
-Route::get('/pdfReportRemissionAssignments', 'ReportController@pdfReportRemissionAssignments')->name('pdfReportRemissionAssignments');
-
-// Lista de Precios
-Route::get('/getPriceList/{idObra?}/{idMaterial?}', 'PriceListController@getPriceList')->name('getPriceList');
-Route::get('/listPriceList', 'PriceListController@index')->name('listPriceList');
-Route::get('/formPriceList/{priceList_id?}/{show?}', 'PriceListController@create')->name('formPriceList');
-Route::get('/deletePriceList/{priceList_id}', 'PriceListController@destroy')->name('deletePriceList');
-Route::post('/savePriceList', 'PriceListController@store')->name('savePriceList');
-Route::get('/searchMaterial/{material_id}', 'PriceListController@searchMaterial')->name('searchMaterial');
-
-//Excel
-Route::get('/reportMachineMov', 'ReportController@reportMachineMov')->name('reportMachineMov');
-Route::get('/showConstruction/{id}', 'ConstructionController@show')->name('showConstruction');
-
-;

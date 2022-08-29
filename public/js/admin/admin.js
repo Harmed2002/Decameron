@@ -413,72 +413,11 @@ function sendPermission() {
     // $(".form-send-admin-user")[0].reset();
 }
 
-//---------------------------------CRUD CLIENTES--------------------------------------------------//
-function Client(typeProcess, client) {
-    var FieldIsDisabled = true;
-    //console.log(client);
-    if (typeProcess == "Show") {
-        $("#sendClientButton").hide();
-        openModal("Ver Cliente");
-    }
-    if (typeProcess == "Edit") {
-        $("#sendClientButton").show();
-        openModal("Editar Cliente");
-        FieldIsDisabled = false;
-    }
-    if (typeProcess == "Create") {
-        $("#sendClientButton").show();
-        openModal("Crear Nuevo Cliente");
-        FieldIsDisabled = false;
-    }
-
-    if (typeProcess == "Create") {
-        $("#idPerson").val(0);
-        $("#idClient").val(0);
-    } else {
-        $("#idPerson").val(client.id);
-        $("#idClient").val(client.id);
-        $("#TipoId").val(client.pers_tipoid);
-        $("#idCliente").val(client.id_person);
-        $("#rSocial").val(client.pers_razonsocial);
-        $("#Apell1").val(client.pers_primerapell);
-        $("#Apell2").val(client.pers_segapell);
-        $("#Nom1").val(client.pers_primernombre);
-        $("#Nom2").val(client.pers_segnombre);
-        $("#dir").val(client.pers_direccion);
-        $("#tel").val(client.pers_telefono);
-        //$('#pais').val(client.pers_pais); no existe aun
-        $("#dpto").val(client.pers_dpto);
-        showCities();
-        $("#ciudad").val(client.pers_ciudad);
-        $("#eMail").val(client.pers_email);
-        $("#dirCorresp").val(client.clie_dircorresp);
-        $("#estado").val(client.pers_estado);
-    }
-
-    // Deshabilito los campos
-    $("#TipoId").prop("disabled", FieldIsDisabled);
-    $("#idCliente").prop("disabled", FieldIsDisabled);
-    $("#rSocial").prop("disabled", !FieldIsDisabled);
-    $("#Apell1").prop("disabled", FieldIsDisabled);
-    $("#Apell2").prop("disabled", FieldIsDisabled);
-    $("#Nom1").prop("disabled", FieldIsDisabled);
-    $("#Nom2").prop("disabled", FieldIsDisabled);
-    $("#dir").prop("disabled", FieldIsDisabled);
-    $("#tel").prop("disabled", FieldIsDisabled);
-    $("#pais").prop("disabled", FieldIsDisabled);
-    $("#dpto").prop("disabled", FieldIsDisabled);
-    $("#ciudad").prop("disabled", FieldIsDisabled);
-    $("#eMail").prop("disabled", FieldIsDisabled);
-    $("#dirCorresp").prop("disabled", FieldIsDisabled);
-    $("#estado").prop("disabled", FieldIsDisabled);
-
-}
-
 
 function showCities() {
     $("#ciudad").html("");
     var stateID = $("#dpto").val();
+    console.log(stateID);
     if (stateID) {
         $.ajax({
             url: "getCities/" + stateID,
@@ -490,9 +429,9 @@ function showCities() {
                 $.each(dataJson, function (k, v) {
                     option +=
                         "<option value=" +
-                        parseInt(v.id) +
+                            parseInt(v.id_state) +
                         ">" +
-                        v.ciud_nombre +
+                            v.nombre +
                         "</option>";
                 });
                 $("#ciudad").html("");
@@ -504,101 +443,6 @@ function showCities() {
     }
 }
 
-function getNameClient() {
-    let idCliente = $("#idCliente").val(); // Obtengo la id del cliente
-
-    if (idCliente) {
-        $.ajax({
-            url: "showClient/" + idCliente,
-            type: "GET",
-            dataType: "json",
-            success: function (dataJson) {
-                if (dataJson.data.length != 0) {
-                    $.each(dataJson.data, function (k, v) {
-                        $("#rSocial").val(
-                            (v.pers_razonsocial || "") +
-                                v.pers_primerapell +
-                                " " +
-                                (v.pers_segapell || "") +
-                                " " +
-                                v.pers_primernombre +
-                                " " +
-                                (v.pers_segnombre || "")
-                        );
-                    });
-                } else {
-                    $("#rSocial").val("");
-                    onDangerUniqueMessage(
-                        "Esta identificación no existe en la base de datos"
-                    );
-                }
-            },
-            error: (error) => {
-                console.log("error", error);
-            },
-        });
-    }
-}
-
-//---------------------------------CRUD PROVEEDORES----------------------------------------------//
-function Supplier(typeProcess, data) {
-    var FieldIsDisabled = true;
-
-    if (typeProcess == "Show") {
-        $("#sendSupplierButton").hide();
-        openModal("Ver Proveedor");
-    }
-    if (typeProcess == "Edit") {
-        $("#sendSupplierButton").show();
-        openModal("Editar Proveedor");
-        FieldIsDisabled = false;
-    }
-    if (typeProcess == "Create") {
-        $("#sendSupplierButton").show();
-        openModal("Crear Nuevo Proveedor");
-        FieldIsDisabled = false;
-    }
-
-    if (typeProcess == "Create") {
-        $("#id").val(0);
-    } else {
-        $("#id").val(data.id);
-        $("#idPerson").val(data.idPerson);
-        $("#TipoId").val(data.pers_tipoid);
-        $("#idProv").val(data.prov_identif);
-        $("#rSocial").val(data.pers_razonsocial);
-        $("#Apell1").val(data.pers_primerapell);
-        $("#Apell2").val(data.pers_segapell);
-        $("#Nom1").val(data.pers_primernombre);
-        $("#Nom2").val(data.pers_segnombre);
-        $("#dir").val(data.pers_direccion);
-        $("#tel").val(data.pers_telefono);
-        //$('#pais').val(client.pers_pais); no existe aun
-        $("#dpto").val(data.pers_dpto);
-        showCities();
-        $("#ciudad").val(data.pers_ciudad);
-        $("#eMail").val(data.pers_email);
-        $("#codActEcon").val(data.prov_codactividad);
-        $("#estado").val(data.prov_estado);
-    }
-
-    // Deshabilito los campos
-    $("#TipoId").prop("disabled", FieldIsDisabled);
-    $("#idProv").prop("disabled", FieldIsDisabled);
-    $("#rSocial").prop("disabled", true);
-    $("#Apell1").prop("disabled", FieldIsDisabled);
-    $("#Apell2").prop("disabled", FieldIsDisabled);
-    $("#Nom1").prop("disabled", FieldIsDisabled);
-    $("#Nom2").prop("disabled", FieldIsDisabled);
-    $("#dir").prop("disabled", FieldIsDisabled);
-    $("#tel").prop("disabled", FieldIsDisabled);
-    $("#pais").prop("disabled", FieldIsDisabled);
-    $("#dpto").prop("disabled", FieldIsDisabled);
-    $("#ciudad").prop("disabled", FieldIsDisabled);
-    $("#eMail").prop("disabled", FieldIsDisabled);
-    $("#codActEcon").prop("disabled", FieldIsDisabled);
-    $("#estado").prop("disabled", FieldIsDisabled);
-}
 
 
 //Roles permisos.
@@ -669,11 +513,13 @@ function sendRolePermission() {
     });
     return 0;
 }
+
 function deleteRolePermission(id_role, id_permission, idTr) {
     $("#" + idTr).remove();
     var url = "deleteRolPermission/" + id_role + "/" + id_permission;
     deleteData(url);
 }
+
 // Usuario rol
 function createUserRole(role_id = null, model_id = null, show = null) {
     if (show == true) {
@@ -751,78 +597,7 @@ function deleteUserRole(id_user, id_rol, idTr) {
     deleteData(url);
 }
 
-// Obtener los datos de una persona mediante su identif.
-function getDataPerson() {
-       var idSociety = $('#idSoc').val();
-    console.log('idSociety',idSociety)
-       
-    if (idSociety !=0) {
-    $.ajax({
-        url: "showPerson/" + idSociety,
-        type: "GET",
-        dataType: "json",
-        success: function (dataJson) {
-      
-            if (dataJson.data) {
-                if (dataJson.data.person.pers_razonsocial != null) {
-                        $("#nombreSoc").val(dataJson.data.person.pers_razonsocial);
-                        $('.numRem').val(dataJson.data.society.prefix+num);
-                        $("#prefix").val(dataJson.data.society.prefix);
-                } else {
-                    var razon =
-                        dataJson.data.person.pers_primerapell +
-                        " " +
-                        (dataJson.data.person.pers_segapell || "") +
-                        " " +
-                        dataJson.data.person.pers_primernombre +
-                        " " +
-                        (dataJson.data.person.pers_segnombre || "");
-                        $("#nombreSoc").val(razon);
-                        $("#prefix").val(dataJson.data.society.prefix);
-                        $('.numRem').val(dataJson.data.society.prefix+num);
-                }
-            } else {
-                $("#nombrePers").val("");
-                onDangerUniqueMessage(
-                    "Esta identificación no existe en la base de datos"
-                );
-            }
-        
-        },
-        error: (error) => {
-            console.log("error", error);
-        }})
-    }else{
-        $('.numRem').val('');
-    }
-}
 
-function getPriceList() {
-    let idObra = $("#idObra").val(); // Obtengo la id de la obra
-    let idMaterial = $("#idMat").val(); // Obtengo la id del material seleccionado
-
-    if (idObra) {
-        $.ajax({
-            url: "getPriceList/" + idObra + "/" + idMaterial,
-            type: "GET",
-            dataType: "json",
-            success: function (dataJson) {
-                //if (dataJson.data.length != 0) {
-
-                $("#punit").val(dataJson.precio || 0); // Muestro el valor unitario del material
-                $("#unidad").val(dataJson.id_unmedida || 0); // Muestro la unidad de medida
-
-                /*} else {
-                    $('#rSocial').val('');
-                    onDangerUniqueMessage('Esta identificación no existe en la base de datos')
-                }*/
-            },
-            error: (error) => {
-                console.log("error", error);
-            },
-        });
-    }
-}
 function modalPermission(permissions, titulo) {
     $('#adminModal').modal("show");
     $("#btnModalGeneral").remove();

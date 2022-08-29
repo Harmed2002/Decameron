@@ -21,6 +21,7 @@ class UserController extends Controller {
         return view('admin.users.index', compact('users'));
         // return view('admin.users.asset.indexLoad', compact('users'));
     }
+
     public function form(Request $request) {
         $roles =  Role::all();
         $user = Auth::user();
@@ -40,6 +41,7 @@ class UserController extends Controller {
         }
 
     }
+
     public function save(Request $request) {
       
         $user = Auth::user();
@@ -71,6 +73,7 @@ class UserController extends Controller {
 
         // return response()->json($user);
     }
+    
     public function delete(Request $request) {
         $user = Auth::user();
         if (!$user->can('Eliminar usuarios')) {

@@ -78,6 +78,7 @@ class UserRolController extends Controller {
 
         return view('admin.userRoles.trUserRole')->with('userRoles', $userRoles);
     }
+    
     function delete(Request $request) {
         $user = Auth::user();
         if (!$user->can('Eliminar asociación de usuario y roles')) {

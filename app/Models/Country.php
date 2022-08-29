@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class State extends Model
+class Country extends Model
 {
     use SoftDeletes;
     /*use HasFactory;*/
@@ -15,8 +15,8 @@ class State extends Model
      *
      * @var array
      */
-    protected $table = 'states';
-    protected $fillable = ['id_country', 'nombre'];
+    protected $table = 'countries';
+    protected $fillable = ['nombre'];
     protected $hidden = ['id'];
 
 
@@ -25,19 +25,14 @@ class State extends Model
         return State::find($id);
     }
 
+    public function State()
+    {
+        return $this->hasMany('App\Models\State', 'id', 'id_country');
+    }
+
     public function Hotel()
     {
-        return $this->hasMany('App\Models\Hotel', 'id', 'id_state' );
-    }
-
-    public function City()
-    {
-        return $this->hasMany('App\Models\City', 'id', 'id_state' );
-    }
-
-    public function Country()
-    {
-        return $this->belongsTo('App\Models\Country', 'id_country', 'id');
+        return $this->hasMany('App\Models\Hotel', 'id', 'id_country');
     }
 
 }

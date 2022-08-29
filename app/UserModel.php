@@ -28,7 +28,7 @@ class UserModel
         //     });
         // }
 
-        return $user->orderBy('id','DESC')->get();
+        return $user->orderBy('id', 'DESC')->get();
     }
 
     /**

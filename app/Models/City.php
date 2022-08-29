@@ -16,20 +16,13 @@ class City extends Model
      * @var array
      */
     protected $table = 'cities';
-
-    protected $fillable = ['dpto_id','ciud_nombre', 'dpto_id', 'ciud_estado'];
-    
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = ['ciud_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['id_state','nombre'];
+    protected $hidden = ['id'];
 
 
     public function getCities($idState)
     {
-        $cities = City::where('dpto_id',$idState)->get();
+        $cities = City::where('id_state', $idState)->get();
          return $cities;
     }
 
@@ -40,7 +33,7 @@ class City extends Model
 
     public function State()
     {
-        return $this->belongsTo('App\Models\State', 'dpto_id', 'id');
+        return $this->belongsTo('App\Models\State', 'id_state', 'id');
     }
 
 }
