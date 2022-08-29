@@ -56,4 +56,3 @@ Route::get('/deleteHotel/{id}', 'HotelController@destroy')->name('deleteHotel');
 Route::get('/roomDetails', 'HotelController@trRoomDetails')->name('roomDetails');
 Route::get('/getCities/{idState}', 'HotelController@Cities')->name('Cities');
 Route::get('/getAccommodations/{idRoomType}', 'HotelController@Accommodations')->name('Accommodations');
-
